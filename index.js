@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const connection = require("./database/database");
 
+const categoriesController = require("./categories/CategoriesController");
+
 //Criar uma instancia do modulo express
 const app = express(); 
 
@@ -25,6 +27,7 @@ app.use(express.static('public'));
         }).catch((error) =>{
             console.log(error);
         })
+app.use("/", categoriesController);
 //Criar um rota principal 
 app.get("/", (req, res) => {
     res.render("index");
