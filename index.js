@@ -4,6 +4,7 @@ const express = require("express");
 const connection = require("./database/database");
 
 const categoriesController = require("./categories/CategoriesController");
+const articlesController = require("./articles/ArticlesController");
 
 //Criar uma instancia do modulo express
 const app = express(); 
@@ -28,6 +29,8 @@ app.use(express.static('public'));
             console.log(error);
         })
 app.use("/", categoriesController);
+app.use("/", articlesController);
+
 //Criar um rota principal 
 app.get("/", (req, res) => {
     res.render("index");
