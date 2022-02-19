@@ -4,11 +4,13 @@
     <hr>
     <div class="card">
         <div class="card-header">
-            <h3>Cadastro de categoria</h3>
+            <h3>Novo artigo</h3>
         </div>
         <div class="card-body">
             <form method="POST" action="/categories/save">
                 <input class="form-control" type="text" name="title" placeholder="Defina o título da categoria"><br>
+                <textarea id="article" class="form-control" placeholder="Escreva o artigo aqui!" name="body"></textarea>
+                <br>
                 <button class="btn btn-success">Cadastrar</button>
             </form>
         </div>
@@ -17,3 +19,11 @@
 
 </div>
 <%- include ("../../partials/footer.ejs") %>
+<script>
+    tinymce.init({
+        selector:"#article",
+        plugins:[
+            'advlist autolink link imagem lists print preview hr searchreplace wordcount fullscreen insertdatime media save table paste emoticons'
+        ]
+    })
+</script>
