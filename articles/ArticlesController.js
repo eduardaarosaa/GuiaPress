@@ -54,4 +54,45 @@ router.post("/articles/delete", (req,res) => {
     }
 });
 
+router.post("/article/update", (req, res) => {
+    console.log('ROUTE UPDATE');
+    var id = req.body.id;
+    var title = req.body.title;
+    var body = req.body.body;
+    var category = req.body.category;
+
+    Article.update({title:title, slug: slugify(title), body:body , category:category}, {
+        where:{
+            id:id
+        }
+    }).then(() => {
+        console.log("caiu aaqui!");
+        res.redirect("/admin/articles");
+    })
+});
+
+router.get("/admin/articles/edit/:id", (req,res) => {
+    var id = req.params.id;
+    if(isNaN(id)){
+        res.redirect("/admin/articles");
+    }
+  
+    //Pesquisar algo pelo ID - rapido
+    Article.findByPk(id).then(article => {
+        if(article != undefined){
+
+            Category.findAll().then(categories => {
+                 res.render("admin/articles/edit", {article:article, categories:categories});
+            });
+
+        }else{
+            console.log('else');
+            res.redirect("/admin/articles");
+        }
+    }).catch(erro => {
+        console.log('erro');
+        res.redirect("/admin/articles");
+    })
+});
+
 module.exports = router ;
