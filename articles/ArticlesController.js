@@ -54,7 +54,7 @@ router.post("/articles/delete", (req,res) => {
     }
 });
 
-router.post("/article/update", (req, res) => {
+router.post("/articles/update", (req, res) => {
     console.log('ROUTE UPDATE');
     var id = req.body.id;
     var title = req.body.title;
@@ -66,7 +66,7 @@ router.post("/article/update", (req, res) => {
             id:id
         }
     }).then(() => {
-        console.log("caiu aaqui!");
+    
         res.redirect("/admin/articles");
     })
 });
@@ -93,6 +93,16 @@ router.get("/admin/articles/edit/:id", (req,res) => {
         console.log('erro');
         res.redirect("/admin/articles");
     })
+});
+
+router.get("/articles/page/:num", (req,res) => {
+     var page = req.params.num;
+
+     Article.findAndCountAll().then(
+         articles => {
+             res.json(articles);
+         }
+     ); //Quantidade de artigos e todos os artigos.
 });
 
 module.exports = router ;

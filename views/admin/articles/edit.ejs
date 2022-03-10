@@ -7,7 +7,8 @@
             <h3>Editar Artigo</h3>
         </div>
         <div class="card-body">
-            <form method="POST" action="../../../../article/update">
+            <form method="POST" action="../../../../articles/update">
+                <input type="hidden" value="<%= article.id%>" name="id">
                 <input class="form-control" type="text" name="title" placeholder="Defina o título da categoria" value="<%= article.title %>"><br>
                 <textarea id="article" class="form-control" placeholder="Escreva o artigo aqui!" name="body"> <%= article.body %> </textarea>
                 <br>
@@ -15,9 +16,15 @@
                 <br>
                 <select name="category" class="form-control">
                     <% categories.forEach((category) => { %>
-                        <option value="<%= category.id %>">
+                        <% if(category.id == article.categoryId){ %>
+                        <option value="<%= category.id %>" selected>
                             <%= category.title %>
                         </option>
+                        <% }else { %>
+                            <option value="<%= category.id %>">
+                                <%= category.title %>
+                            </option>
+                       <% } %>
                     <%}) %>
                 </select>
                 <input type="hidden" name="id" value="<%= article.id %>">
@@ -29,6 +36,10 @@
     </div>
 
 </div>
+<div id="content" style="display: none;">
+    <%- article.body %>
+</div>
+
 <%- include ("../../partials/footer.ejs") %>
 
 <script>
@@ -37,6 +48,9 @@
         selector:"#article",
         plugins:[
             'advlist autolink link imagem lists print preview hr searchreplace wordcount fullscreen insertdatime media save table paste emoticons'
-        ]
+        ],
+        init_instance_callback:()=>{
+            tinymce.get("article").setContent($("#content").html())
+        }
     })
 </script>

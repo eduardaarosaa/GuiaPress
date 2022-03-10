@@ -49,22 +49,32 @@ app.get("/", (req, res) => {
 });
 
 app.get("/:slug", (req, res) => {
+    console.log(req.params.slug);
     var slug = req.params.slug;
+    // var slug = 'Mysql-ou-NoSQL-Qual-o-melhor';
+  
+    console.log("oiiii");
+    console.log(req.params.slug , 'AQUIIII');
+
     Article.findOne({
         where:{
             slug:slug
         }
+
     }).then(article => {
+        console.log(article , "Linha 61");
         if(article != undefined){
-           
+            console.log("Entrou no IF");
             Category.findAll().then(categories => {
                 res.render("article", {article:article, categories:categories});
                })
 
        }else{
+           console.log("Else");
            res.render("/");
        }
     }).catch(err => {
+        console.log("Error");
         res.render("/");
     });
 });
@@ -83,6 +93,7 @@ app.get("/category/:slug", (req,res)=>{
             });
 
         }else{
+          
             res.redirect("/");
         }
     }).catch(err => {
@@ -92,6 +103,6 @@ app.get("/category/:slug", (req,res)=>{
 
  //Inicialziando a aplicação
 
- app.listen(8080, () =>{
+ app.listen(8080                                                                                                                                                                                                                         , () =>{
      console.log("O Servidor está rodando!!!");
  });
