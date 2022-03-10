@@ -97,10 +97,41 @@ router.get("/admin/articles/edit/:id", (req,res) => {
 
 router.get("/articles/page/:num", (req,res) => {
      var page = req.params.num;
+     var offeset = 0; 
 
-     Article.findAndCountAll().then(
+     if(isNaN(page) || page == 1){
+         offeset = 0;
+     }else{
+         offeset = (parseInt(page) * 2);
+         console.log(offeset);
+     }
+     Article.findAndCountAll({
+         limit: 2,
+         offeset: offeset,
+         order:[[
+            'id','DESC'
+           ]]
+     }).then(
          articles => {
-             res.json(articles);
+             var next; 
+             if(offeset + 2 >= articles.count){
+                next = false; //Significa que atingimos a quantidade máxima de artigos
+             }else{
+                 next = true;
+             }
+             var result = {
+                 page: parseInt(page),
+                 next:next,
+                 articles : articles
+             }
+             Category.findAll().then(categories => {
+                    res.render("admin/articles/page", {
+                        result:result,
+                        categories:categories
+                    })
+             });
+
+            //  res.json(result);
          }
      ); //Quantidade de artigos e todos os artigos.
 });
