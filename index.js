@@ -48,7 +48,7 @@ app.get("/", (req, res) => {
    });
 });
 
-app.get("/:slug", (req, res) => {
+app.get("/artigo/:slug", (req, res) => {
     console.log(req.params.slug);
     var slug = req.params.slug;
     // var slug = 'Mysql-ou-NoSQL-Qual-o-melhor';

@@ -96,29 +96,20 @@ router.get("/admin/articles/edit/:id", (req,res) => {
 });
 
 router.get("/articles/page/:num", (req,res) => {
-     var page = req.params.num;
-     var offeset = 0; 
+    var page = req.params.num;
+    let offset = 1;
+        if(!isNaN(page) && page > 0) {
+            offset = parseInt(page);
+        }
+        Article.findAndCountAll({
+            limit: 4,
+            offset: (offset * 4) - 4
+          }).then(articles => {
+            let next = true;
+            if((offset * 4) >= articles.count) {
+               next = false;
+            }
 
-     if(isNaN(page) || page == 1){
-         offeset = 0;
-     }else{
-         offeset = (parseInt(page) * 2);
-         console.log(offeset);
-     }
-     Article.findAndCountAll({
-         limit: 2,
-         offeset: offeset,
-         order:[[
-            'id','DESC'
-           ]]
-     }).then(
-         articles => {
-             var next; 
-             if(offeset + 2 >= articles.count){
-                next = false; //Significa que atingimos a quantidade máxima de artigos
-             }else{
-                 next = true;
-             }
              var result = {
                  page: parseInt(page),
                  next:next,
