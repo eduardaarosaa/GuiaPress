@@ -1,6 +1,7 @@
 //Importar o express
 const bodyParser = require("body-parser");
 const express = require("express");
+const session = require("express-session");
 const connection = require("./database/database");
 
 const categoriesController = require("./categories/CategoriesController");
@@ -16,6 +17,14 @@ const app = express();
 
 //View Engine
 app.set('view engine', 'ejs');
+
+//Sessions
+app.use(session({
+    secret: "hasuasuha",
+    cookie: {
+        maxAge:30000 // É em milisegundos o formato
+    }
+}))
 
 //static
 app.use(express.static('public'));
