@@ -46,6 +46,8 @@ app.use("/", categoriesController);
 app.use("/", articlesController);
 app.use("/", usersController);
 
+
+
 //Criar um rota principal 
 app.get("/", (req, res) => {
    Article.findAll({
